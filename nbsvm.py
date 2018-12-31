@@ -73,7 +73,7 @@ def main(ptrain, ntrain, ptest, ntest, out, liblinear, ngram):
     predictsvm = os.path.join(liblinear, "predict")
     os.system(trainsvm + " -s 0 train-nbsvm.txt model.logreg")
     os.system(predictsvm + " -b 1 test-nbsvm.txt model.logreg " + out)
-    os.system("rm model.logreg train-nbsvm.txt test-nbsvm.txt")
+    # os.system("rm model.logreg train-nbsvm.txt test-nbsvm.txt")
 
 
 if __name__ == "__main__":
@@ -85,7 +85,7 @@ if __name__ == "__main__":
         --ntrain /PATH/data/full-train-neg.txt\
         --ptest /PATH/data/test-pos.txt\
         --ntest /PATH/data/test-neg.txt\
-         --ngram 123 --out TEST-SCORE
+        --ngram 123 --out TEST-SCORE
     """
 
     parser = argparse.ArgumentParser(
