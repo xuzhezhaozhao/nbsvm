@@ -22,19 +22,21 @@ for j in train/pos train/neg test/pos test/neg; do
   rm temp
 done
 
-mkdir data
+mkdir -p data
 mv aclImdb/train/pos/norm.txt data/train-pos.txt
 mv aclImdb/train/neg/norm.txt data/train-neg.txt
 mv aclImdb/test/pos/norm.txt data/test-pos.txt
 mv aclImdb/test/neg/norm.txt data/test-neg.txt
 rm -r aclImdb
 
+if [ ! -d liblinear-1.96 ]; then
 wget https://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/liblinear-1.96.zip
 unzip liblinear-1.96.zip
 rm liblinear-1.96.zip
 cd liblinear-1.96
 make
 cd ..
+fi
 
 echo "BI-GRAM";
 python ../nbsvm.py --liblinear liblinear-1.96 --ptrain data/train-pos.txt --ntrain data/train-neg.txt --ptest data/test-pos.txt --ntest data/test-neg.txt --ngram 12 --out NBSVM-TEST-BIGRAM
