@@ -85,7 +85,8 @@ if __name__ == "__main__":
         --ntrain /PATH/data/full-train-neg.txt\
         --ptest /PATH/data/test-pos.txt\
         --ntest /PATH/data/test-neg.txt\
-        --ngram 123 --out TEST-SCORE
+        --ngram 123\
+        --out TEST-SCORE
     """
 
     parser = argparse.ArgumentParser(
