@@ -1,16 +1,19 @@
-#this function will convert text to lowercase and will disconnect punctuation and special symbols from words
+# This function will convert text to lowercase and will disconnect punctuation
+# and special symbols from words.
+
 function normalize_text {
   awk '{print tolower($0);}' < $1 | sed -e 's/\./ \. /g' -e 's/<br \/>/ /g' -e 's/"/ " /g' \
   -e 's/,/ , /g' -e 's/(/ ( /g' -e 's/)/ ) /g' -e 's/\!/ \! /g' -e 's/\?/ \? /g' \
   -e 's/\;/ \; /g' -e 's/\:/ \: /g' > $1-norm
 }
 
-cd ..
-mkdir nbsvm_run; cd nbsvm_run
+mkdir -p nbsvm_run; cd nbsvm_run
 
-wget http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz
-tar -xvf aclImdb_v1.tar.gz
-rm aclImdb_v1.tar.gz
+# wget http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz
+# tar -xvf aclImdb_v1.tar.gz
+# rm aclImdb_v1.tar.gz
+
+ln -sf ../../../datasets/aclImdb_v1-dataset/aclImdb .
 
 for j in train/pos train/neg test/pos test/neg; do
   for i in `ls aclImdb/$j`; do cat aclImdb/$j/$i >> temp; awk 'BEGIN{print;}' >> temp; done
@@ -34,7 +37,7 @@ make
 cd ..
 
 echo "BI-GRAM";
-python ../nbsvm/nbsvm.py --liblinear liblinear-1.96 --ptrain data/train-pos.txt --ntrain data/train-neg.txt --ptest data/test-pos.txt --ntest data/test-neg.txt --ngram 12 --out NBSVM-TEST-BIGRAM
+python ../nbsvm.py --liblinear liblinear-1.96 --ptrain data/train-pos.txt --ntrain data/train-neg.txt --ptest data/test-pos.txt --ntest data/test-neg.txt --ngram 12 --out NBSVM-TEST-BIGRAM
 echo "TRI-GRAM";
-python ../nbsvm/nbsvm.py --liblinear liblinear-1.96 --ptrain data/train-pos.txt --ntrain data/train-neg.txt --ptest data/test-pos.txt --ntest data/test-neg.txt --ngram 123 --out NBSVM-TEST-TRIGRAM
-cd ../nbsvm
+python ../nbsvm.py --liblinear liblinear-1.96 --ptrain data/train-pos.txt --ntrain data/train-neg.txt --ptest data/test-pos.txt --ntest data/test-neg.txt --ngram 123 --out NBSVM-TEST-TRIGRAM
+cd ../
